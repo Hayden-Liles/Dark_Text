@@ -1,5 +1,4 @@
-import tkinter
-import customtkinter
+
 
 class InputController:
     def __init__(self):
