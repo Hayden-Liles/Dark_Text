@@ -1,5 +1,6 @@
 import tkinter
 import customtkinter
+from controllers.InputController import inputController
 
 ctk = customtkinter
 
@@ -18,11 +19,7 @@ app.geometry("800x800")
 entry = ctk.CTkEntry(master=app, placeholder_text="Type here...", width=600, height=45, border_width=2, corner_radius=10)
 entry.place(relx=.5, rely=.95, anchor=tkinter.CENTER)
 
-def get_text(event=None):
-    text = entry.get()
-    print(text)
-
-entry.bind('<Return>', get_text)
+entry.bind('<Return>', inputController.getInput)
 
 
 
