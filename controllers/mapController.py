@@ -51,6 +51,7 @@ class MapFrameController:
                 area_map[current_point] = ("inner", groundColor)
 
         return area_map
+        
     
     def draw_map(self, canvas, area_map):
         for i in range(mSize // aSize):
@@ -101,13 +102,17 @@ class MapFrame(customtkinter.CTkFrame):
         }
     
     def load_map_data(self, map_data):
-        self.area_map = {tuple(map(int, k.split(','))): v for k, v in map_data["area_map"].items()}
+        self.area_map = {tuple(map(int, k.split(','))): v for item in map_data["area_map"] for k, v in item.items()}
         self.map_frame_controller.draw_map(self.canvas, self.area_map)
         return self
 
 class MapController:
     def __init__(self):
         pass
+
+    def get_outer_border_coordinates_from_area_map(self):
+        area_map = appState.get_data('curMap')
+        print(area_map["area_map"][0])
 
     def checkMap(self, master):
         map = mapServices.checkMap()

@@ -9,10 +9,10 @@ class MapServices:
         map = appState.get_data('curMap')
         return map
 
-
     def saveMap(self, mapData):
         map_data_to_save = mapData.get_map_data()
-        map_data_to_save["area_map"] = {f"{k[0]},{k[1]}": v for k, v in map_data_to_save["area_map"].items()}
+        area_map_list = [{f"{k[0]},{k[1]}": v} for k, v in map_data_to_save["area_map"].items()]
+        map_data_to_save["area_map"] = area_map_list
         appState.set_data('curMap', map_data_to_save)
         appState.save_state('save')
     
