@@ -1,64 +1,85 @@
-import tkinter as tk
 import random
+import tkinter as tk
+import customtkinter
+
 
 # Constants
-MAP_SIZE = 624
-AREA_SIZE = 26
-BORDER_SIZE = 1
-INNER_AREA_RATIO = 0.6
-MAX_INNER_AREA = int((MAP_SIZE // AREA_SIZE) * (MAP_SIZE // AREA_SIZE) * INNER_AREA_RATIO)
+mSize = 624
+aSize = 26
+aBorder = 1
+groundRatio = 0.6
+maxGround = int((mSize // aSize) * (mSize // aSize) * groundRatio)
 
 # Colors
-BORDER_COLOR = "light grey"
-OUTER_AREA_COLOR = "black"
-INNER_AREA_COLOR = "#7C501A"
+borderColor = "grey"
+voidColor = "black"
+groundColor = "#7C501A"
+
 
 def random_start_point():
-    return random.randint(0, MAP_SIZE // AREA_SIZE - 1)
+    return random.randint(0, mSize // aSize - 1)
+
 
 def generate_area_map():
     area_map = {}
     
-    for i in range(MAP_SIZE // AREA_SIZE):
-        for j in range(MAP_SIZE // AREA_SIZE):
-            is_border = i == 0 or j == 0 or i == (MAP_SIZE // AREA_SIZE - 1) or j == (MAP_SIZE // AREA_SIZE - 1)
+    # Define border cells
+    for i in range(mSize // aSize):
+        for j in range(mSize // aSize):
+            is_border = i == 0 or j == 0 or i == (mSize // aSize - 1) or j == (mSize // aSize - 1)
             if is_border:
-                area_map[(i, j)] = ("outer", OUTER_AREA_COLOR)
+                area_map[(i, j)] = ("outer", voidColor)
 
+    # Generate ground cells
     current_point = (random_start_point(), random_start_point())
-    area_map[current_point] = ("inner", INNER_AREA_COLOR)
+    area_map[current_point] = ("inner", groundColor)
 
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    while len([coord for coord, (area_type, _) in area_map.items() if area_type == "inner"]) < MAX_INNER_AREA:
+    while len([coord for coord, (area_type, _) in area_map.items() if area_type == "inner"]) < maxGround:
         dx, dy = random.choice(directions)
         x, y = current_point
         x += dx
         y += dy
 
-        if 0 <= x < MAP_SIZE // AREA_SIZE and 0 <= y < MAP_SIZE // AREA_SIZE:
+        if 0 <= x < mSize // aSize and 0 <= y < mSize // aSize:
             current_point = (x, y)
-            area_map[current_point] = ("inner", INNER_AREA_COLOR)
+            area_map[current_point] = ("inner", groundColor)
 
     return area_map
 
-def draw_map(canvas, area_map):
-    for i in range(MAP_SIZE // AREA_SIZE):
-        for j in range(MAP_SIZE // AREA_SIZE):
-            x1 = i * (AREA_SIZE + BORDER_SIZE)
-            y1 = j * (AREA_SIZE + BORDER_SIZE)
-            x2 = x1 + AREA_SIZE
-            y2 = y1 + AREA_SIZE
 
-            is_border = i == 0 or j == 0 or i == (MAP_SIZE // AREA_SIZE - 1) or j == (MAP_SIZE // AREA_SIZE - 1)
+def draw_map(canvas, area_map):
+    for i in range(mSize // aSize):
+        for j in range(mSize // aSize):
+            x1 = i * (aSize + aBorder)
+            y1 = j * (aSize + aBorder)
+            x2 = x1 + aSize
+            y2 = y1 + aSize
+
+            is_border = i == 0 or j == 0 or i == (mSize // aSize - 1) or j == (mSize // aSize - 1)
 
             if is_border:
-                color = OUTER_AREA_COLOR
+                color = voidColor
             elif (i, j) in area_map:
                 area_type, color = area_map[(i, j)]
             else:
-                area_type, color = "outer", OUTER_AREA_COLOR
+                area_type, color = "outer", voidColor
 
-            canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=BORDER_COLOR)
+            canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=borderColor)
+
+
+class MapFrame(customtkinter.CTkFrame):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        canvas_width = (mSize // aSize) * (aSize + aBorder) - 3
+        canvas_height = (mSize // aSize) * (aSize + aBorder) - 3
+
+        self.canvas = tk.Canvas(self, width=canvas_width, height=canvas_height)
+        self.canvas.pack()
+
+        area_map = generate_area_map()
+        draw_map(self.canvas, area_map)
 
 def change_area_color(area_map, coordinates, new_color):
     if coordinates in area_map:
@@ -67,19 +88,16 @@ def change_area_color(area_map, coordinates, new_color):
     else:
         print("Coordinates not found in area map.")
 
-def main():
-    root = tk.Tk()
-    root.title("Random Inner-Area Map")
+class App(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
 
-    canvas_width = (MAP_SIZE // AREA_SIZE) * (AREA_SIZE + BORDER_SIZE) + BORDER_SIZE
-    canvas_height = (MAP_SIZE // AREA_SIZE) * (AREA_SIZE + BORDER_SIZE) + BORDER_SIZE
+        self.geometry("1200x800")
+        self.title("Map Frame Test")
 
-    canvas = tk.Canvas(root, width=canvas_width, height=canvas_height)
-    canvas.pack()
-
-    area_map = generate_area_map()
-    draw_map(canvas, area_map)
-    root.mainloop()
+        self.map_frame = MapFrame(self)
+        self.map_frame.place(relx=0.5, rely=0.025, anchor=tk.N)
 
 if __name__ == "__main__":
-    main()
+    app = App()
+    app.mainloop()
