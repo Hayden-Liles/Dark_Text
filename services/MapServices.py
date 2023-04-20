@@ -15,7 +15,10 @@ class MapServices:
         map_data_to_save["area_map"] = area_map_list
         appState.set_data('curMap', map_data_to_save)
         appState.save_state('save')
-    
+
+    def getMap(self):
+        map = appState.get_data('curMap')
+        return map
         
 
 

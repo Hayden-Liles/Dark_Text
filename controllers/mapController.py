@@ -2,7 +2,6 @@ import random
 import tkinter as tk
 import customtkinter
 from services.MapServices import mapServices
-from AppState import appState
 
 mSize = 624
 aSize = 26
@@ -110,23 +109,21 @@ class MapController:
     def __init__(self):
         pass
 
-    def get_outer_border_coordinates_from_area_map(self):
-        area_map = appState.get_data('curMap')
-        print(area_map["area_map"][0])
-
     def checkMap(self, master):
         map = mapServices.checkMap()
         if(map == None):
             self.create_map_frame(master)
         else:
             self.map_frame = MapFrame(master)
-            setMap(self.map_frame.load_map_data(appState.get_data('curMap')))
+            map = mapServices.getMap()
+            setMap(self.map_frame.load_map_data(map))
             
 
     def create_map_frame(self, master):
         self.map_frame = MapFrame(master)
         mapServices.saveMap(self.map_frame)
-        setMap(self.map_frame.load_map_data(appState.get_data('curMap')))
+        map = mapServices.getMap()
+        setMap(self.map_frame.load_map_data(map))
 
 
 mapController = MapController()
