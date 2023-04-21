@@ -21,17 +21,27 @@ class PlayerController:
         playerLocation = playerServices.getPlayerLocation()
         master.update_cell_color((playerLocation[0], playerLocation[1]), "green")
 
-    def movePlayer(self, direction):
-        # currentLocation = playerServices.getPlayerLocation()
+    def changeColorToGround(self, location, master):
+        master.update_cell_color((location[0], location[1]), "#7C501A")
+
+    def movePlayer(self, direction, master):
+        currentLocation = playerServices.getPlayerLocation()
+        x, y = currentLocation
+        self.changeColorToGround(currentLocation, master)
+
         match direction:
             case "Up":
-                print('Up')
+                y -= 1
             case "Down":
-                print('Down')
+                y += 1
             case "Left":
-                print('Left')
+                x -= 1
             case "Right":
-                print('Right')
+                x += 1
+
+        newLocation = (x, y)
+        playerServices.saveLocation(newLocation)
+        self.drawPlayerLocation(master)
 
 
 

@@ -28,7 +28,7 @@ class App(customtkinter.CTk):
     def keyPress(self, event):
         key = event.keysym
         if key in ('Up', 'Down', 'Left', 'Right'):
-            playerController.movePlayer(key)
+            playerController.movePlayer(key, self.map_frame)
 
 if __name__ == "__main__":
     app = App()

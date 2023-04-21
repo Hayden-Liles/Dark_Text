@@ -19,6 +19,10 @@ class PlayerServices:
             return False
         else:
             return True
+        
+    def saveLocation(self, location):
+        appState.set_data('playerLocation', location)
+        appState.save_state('save.json')
 
 
 playerServices = PlayerServices()
