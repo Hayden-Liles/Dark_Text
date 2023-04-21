@@ -3,6 +3,7 @@ import tkinter as tk
 import customtkinter
 from services.MapServices import mapServices
 
+
 mSize = 624
 aSize = 26
 aBorder = 1
@@ -75,8 +76,6 @@ class MapFrameController:
         if coordinates in area_map:
             area_type, _ = area_map[coordinates]
             area_map[coordinates] = (area_type, new_color)
-        else:
-            print("Coordinates not found in area map.")
 
 mapFrameController = MapFrameController()
 
@@ -117,6 +116,7 @@ class MapController:
             self.map_frame = MapFrame(master)
             map = mapServices.getMap()
             setMap(self.map_frame.load_map_data(map))
+            return self.map_frame
             
 
     def create_map_frame(self, master):
@@ -127,3 +127,4 @@ class MapController:
 
 
 mapController = MapController()
+    

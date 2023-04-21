@@ -23,6 +23,6 @@ class AppState:
             with open(file_name, 'r') as f:
                 self._data = json.load(f)
         except FileNotFoundError:
-            print(f"File '{file_name}' not found. AppState not loaded.")
+            pass
 
 appState = AppState()
