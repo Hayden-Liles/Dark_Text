@@ -12,6 +12,7 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure((0, 1), weight=1)
         self.map_frame = mapController.checkMap(self)
+        
         # SECTION TESTING LAYOUT
         self.button = customtkinter.CTkButton(self, text="test")
         self.button.grid(row=0, column=0, pady=(20, 0), padx=(20, 0), sticky='nw')

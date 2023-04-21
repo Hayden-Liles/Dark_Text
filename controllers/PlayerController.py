@@ -20,7 +20,6 @@ class PlayerController:
     def changePlayerLocation(self, master):
         playerLocation = playerServices.getPlayerLocation()
         master.update_cell_color((playerLocation[0], playerLocation[1]), "green")
-        pass
 
 
 
