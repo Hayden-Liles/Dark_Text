@@ -6,7 +6,7 @@ class MapServices:
         pass
 
     def checkMap(self):
-        appState.load_state('save')
+        appState.load_state('save.json')
         map = appState.get_data('curMap')
         return map
 
@@ -22,7 +22,7 @@ class MapServices:
 
         map_data_to_save["area_map"] = area_map_list
         appState.set_data('curMap', map_data_to_save)
-        appState.save_state('save')
+        appState.save_state('save.json')
 
     def getMap(self):
         map = appState.get_data('curMap')
@@ -36,6 +36,7 @@ class MapServices:
                 if b[0] == "inner":
                     inner.append(a)
         return inner
+
 
 
 mapServices = MapServices()

@@ -1,6 +1,5 @@
 from services.MapServices import mapServices
-from controllers.MapController import MapFrame
-import random
+from services.PlayerServices import playerServices
 
 class PlayerController:
     def __init__(self):
@@ -8,9 +7,21 @@ class PlayerController:
 
     def chooseStartLocation(self, master):
         inner = mapServices.getInnerArea()
-        randomLocation = tuple(map(int, random.choice(inner).split(',')))
-        master.update_cell_color((randomLocation[0], randomLocation[1]), "green")
-        # master.update_cell_color((23, 7), "green")
+        playerServices.chooseStartLocation(inner)
+        self.changePlayerLocation(master)
+
+    def checkPlayerLocation(self, master):
+        check = playerServices.checkPlayerLocation()
+        if(check):
+            self.changePlayerLocation(master)
+        else:
+            self.chooseStartLocation(master)
+
+    def changePlayerLocation(self, master):
+        playerLocation = playerServices.getPlayerLocation()
+        master.update_cell_color((playerLocation[0], playerLocation[1]), "green")
+        pass
+
 
 
 
