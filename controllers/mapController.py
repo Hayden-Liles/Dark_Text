@@ -7,7 +7,7 @@ from services.MapServices import mapServices
 mSize = 624
 aSize = 26
 aBorder = 1
-groundRatio = 0.6
+groundRatio = .6
 maxGround = int((mSize // aSize) * (mSize // aSize) * groundRatio)
 borderColor = "grey"
 voidColor = "black"
@@ -15,7 +15,7 @@ groundColor = "#7C501A"
 
 
 def setMap(map_frame):
-    map_frame.place(relx=0.5, rely=0.025, anchor=tk.N)
+    map_frame.grid(row=0, column=1, padx=20, pady=(20, 0), sticky="nw")
 
 
 class MapFrameController:
@@ -71,11 +71,12 @@ class MapFrameController:
                     area_type, color = "outer", voidColor
 
                 canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=borderColor)
-    
-    def change_area_color(self, area_map, coordinates, new_color):
-        if coordinates in area_map:
-            area_type, _ = area_map[coordinates]
-            area_map[coordinates] = (area_type, new_color)
+                
+    def update_cell_color(self, area_map, cell, new_color):
+        if cell in area_map:
+            area_map[cell] = (area_map[cell][0], new_color)
+        else:
+            area_map[cell] = ("inner", new_color)
 
 mapFrameController = MapFrameController()
 
@@ -103,6 +104,10 @@ class MapFrame(customtkinter.CTkFrame):
         self.area_map = {tuple(map(int, k.split(','))): v for item in map_data["area_map"] for k, v in item.items()}
         self.map_frame_controller.draw_map(self.canvas, self.area_map)
         return self
+    
+    def update_cell_color(self, cell, new_color):
+        self.map_frame_controller.update_cell_color(self.area_map, cell, new_color)
+        self.map_frame_controller.draw_map(self.canvas, self.area_map)    
 
 class MapController:
     def __init__(self):
@@ -117,7 +122,6 @@ class MapController:
             map = mapServices.getMap()
             setMap(self.map_frame.load_map_data(map))
             return self.map_frame
-            
 
     def create_map_frame(self, master):
         self.map_frame = MapFrame(master)
