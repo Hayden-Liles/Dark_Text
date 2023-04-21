@@ -17,10 +17,18 @@ class App(customtkinter.CTk):
         self.button = customtkinter.CTkButton(self, text="test")
         self.button.grid(row=0, column=0, pady=(20, 0), padx=(20, 0), sticky='nw')
 
+        # NOTE the binding for keypress event listener
+        self.bind('<KeyRelease>', self.keyPress)
+
     def configure_window(self):
         self.geometry("1000x900")
         self.title("Dark Text")
 
+    # SECTION KeyPress event Listener
+    def keyPress(self, event):
+        key = event.keysym
+        if key in ('Up', 'Down', 'Left', 'Right'):
+            playerController.movePlayer(key)
 
 if __name__ == "__main__":
     app = App()
