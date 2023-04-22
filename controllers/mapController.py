@@ -2,6 +2,7 @@ import random
 import tkinter as tk
 import customtkinter
 from services.MapServices import mapServices
+from controllers.PlayerController import playerController
 
 
 mSize = 624
@@ -107,7 +108,13 @@ class MapFrame(customtkinter.CTkFrame):
     
     def update_cell_color(self, cell, new_color):
         self.map_frame_controller.update_cell_color(self.area_map, cell, new_color)
-        self.map_frame_controller.draw_map(self.canvas, self.area_map)    
+        x, y = cell
+        x1 = x * (aSize + aBorder)
+        y1 = y * (aSize + aBorder)
+        x2 = x1 + aSize
+        y2 = y1 + aSize
+        self.canvas.create_rectangle(x1, y1, x2, y2, fill=new_color, outline=borderColor)
+    
 
 class MapController:
     def __init__(self):
@@ -121,6 +128,7 @@ class MapController:
             self.map_frame = MapFrame(master)
             map = mapServices.getMap()
             setMap(self.map_frame.load_map_data(map))
+            playerController.checkPlayerLocation(self.map_frame)
             return self.map_frame
 
     def create_map_frame(self, master):
@@ -128,7 +136,7 @@ class MapController:
         mapServices.saveMap(self.map_frame)
         map = mapServices.getMap()
         setMap(self.map_frame.load_map_data(map))
+        playerController.checkPlayerLocation(self.map_frame)
 
 
 mapController = MapController()
-    

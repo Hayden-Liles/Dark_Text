@@ -1,5 +1,6 @@
 from services.MapServices import mapServices
 from services.PlayerServices import playerServices
+import re
 
 class PlayerController:
     def __init__(self):
@@ -27,7 +28,6 @@ class PlayerController:
     def movePlayer(self, direction, master):
         currentLocation = playerServices.getPlayerLocation()
         x, y = currentLocation
-        self.changeColorToGround(currentLocation, master)
 
         match direction:
             case "Up":
@@ -38,10 +38,29 @@ class PlayerController:
                 x -= 1
             case "Right":
                 x += 1
-
+        # NOTE change "currentLocation" to previous color then move then save "previous color" 
+        #                                                              AKA the current locations color
         newLocation = (x, y)
+        check = self.checkLocationIsVoid(newLocation)
+        if(not check):
+            return
+        # TODO add a death sequence or an option to jump into the void :P or leave it whatever your feeling
+        self.changeColorToGround(currentLocation, master)
         playerServices.saveLocation(newLocation)
         self.drawPlayerLocation(master)
+
+    def checkLocationIsVoid(self, location):
+        location = re.sub(r'[() ]', '', str(location))
+        inner = mapServices.getInnerArea()
+        check = inner.count(location)
+        if(check == 0):
+            return False
+        return True
+    
+    def saveLocationColor(self, location):
+        pass
+        
+        
 
 
 
