@@ -10,9 +10,10 @@ aSize = 26
 aBorder = 1
 groundRatio = .6
 maxGround = int((mSize // aSize) * (mSize // aSize) * groundRatio)
-borderColor = "grey"
+borderColor = "black"
 voidColor = "black"
-groundColor = "#7C501A"
+# groundColor = "#7C501A"
+groundColor = "gray"
 
 
 def setMap(map_frame):
