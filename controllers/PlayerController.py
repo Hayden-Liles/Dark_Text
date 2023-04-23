@@ -22,8 +22,9 @@ class PlayerController:
         playerLocation = playerServices.getPlayerLocation()
         master.update_cell_color((playerLocation[0], playerLocation[1]), "green")
 
-    def changeColorToGround(self, location, master):
-        master.update_cell_color((location[0], location[1]), "#7C501A")
+    def revertGroundColor(self, location, master):
+        color = mapServices.getPreviousGroundColor()
+        master.update_cell_color((location[0], location[1]), color)
 
     def movePlayer(self, direction, master):
         currentLocation = playerServices.getPlayerLocation()
@@ -42,10 +43,10 @@ class PlayerController:
         #                                                              AKA the current locations color
         newLocation = (x, y)
         check = self.checkLocationIsVoid(newLocation)
-        if(not check):
+        if(check == None):
             return
         # TODO add a death sequence or an option to jump into the void :P or leave it whatever your feeling
-        self.changeColorToGround(currentLocation, master)
+        self.revertGroundColor(currentLocation, master) # rename function to changeColor to last
         playerServices.saveLocation(newLocation)
         self.drawPlayerLocation(master)
 
@@ -54,15 +55,40 @@ class PlayerController:
         inner = mapServices.getInnerArea()
         check = inner.count(location)
         if(check == 0):
-            return False
+            return None
+        self.saveLocationDetails(location)
         return True
     
-    def saveLocationColor(self, location):
-        pass
-        
-        
+    def findIndexInMap(self, map, coords):
+        for index, item in enumerate(map):
+            if coords in item:
+                return index
+        return -1
+    
+    def saveLocationDetails(self, location):
+        map = mapServices.getMap()
+        index = self.findIndexInMap(map["area_map"], location)
+        cell = map["area_map"][index]
+        cell = list(cell.values())[0]
+        # TODO
+        # NEED TO save the cells color
+        mapServices.saveLocationDetails(cell)
 
 
 
 
 playerController = PlayerController()
+
+
+
+# NOTE DELETE
+
+# print(f'ORGINAL: {locationData}')
+#         locationIndex = locationData[0]
+#         locationValues = list(locationData[1].values())[0]
+#         print(f'INDEX: {locationIndex}')
+#         print(f'VALUES: {locationValues}')
+#         locationValues[1] = "black"
+#         print(f'Changed VALUES: {locationValues}')
+
+#         print(f'ORGINAL???: {locationData}')

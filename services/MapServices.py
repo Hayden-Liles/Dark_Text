@@ -36,6 +36,14 @@ class MapServices:
                 if b[0] == "inner":
                     inner.append(a)
         return inner
+    
+    def saveLocationDetails(self, cell):
+        appState.set_data('prevCellData', cell)
+        appState.save_state('save.json')
+
+    def getPreviousGroundColor(self):
+        color = appState.get_data('prevCellData')[1]
+        return color
 
 
 
