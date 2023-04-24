@@ -1,5 +1,6 @@
 import json
 
+
 class AppState:
     def __init__(self):
         self._data = {}
@@ -24,5 +25,6 @@ class AppState:
                 self._data = json.load(f)
         except FileNotFoundError:
             pass
+
 
 appState = AppState()

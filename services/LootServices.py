@@ -1,10 +1,11 @@
 from AppState import appState
 import random
 
+
 class LootServices:
     def __init__(self):
-        pass  
-    
+        pass
+
     def generateAreaAroundPlayer(self, playerLocation, map):
         possibleLocations = [
             [playerLocation[0]-1, playerLocation[1]-1],
@@ -20,7 +21,8 @@ class LootServices:
         for x in map:
             for coords in x:
                 for a in possibleLocations:
-                    myStr = str(a).replace('[', "").replace(']', "").replace(' ', "")
+                    myStr = str(a).replace(
+                        '[', "").replace(']', "").replace(' ', "")
                     if myStr == coords and x[coords][1] == 'gray':
                         filteredList.append(a)
 
@@ -30,7 +32,9 @@ class LootServices:
             "red": 0.05
         }
         for i in range(len(filteredList)):
-            filteredList[i].append(random.choices(list(options.keys()), weights=list(options.values()))[0])
+            filteredList[i].append(random.choices(
+                list(options.keys()), weights=list(options.values()))[0])
         return filteredList
+
 
 lootServices = LootServices()

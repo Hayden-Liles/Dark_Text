@@ -27,7 +27,7 @@ class PlayerController:
         map = mapServices.getMap()["area_map"]
         locations = lootServices.generateAreaAroundPlayer(playerLocation, map)
         portalLocation = mapServices.getPortalLocation()
-        print(portalLocation)
+
         for x in locations:
             if self.checkLocationIsVoid(tuple(x)) == None:
                 pass

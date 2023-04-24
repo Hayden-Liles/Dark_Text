@@ -18,7 +18,8 @@ class MapServices:
             if xCord == 23 or xCord == 0 or yCord == 23 or yCord == 0:
                 map_data_to_save["area_map"][coords] = ['outer', 'black']
 
-        area_map_list = [{f"{k[0]},{k[1]}": v} for k, v in map_data_to_save["area_map"].items()]
+        area_map_list = [
+            {f"{k[0]},{k[1]}": v} for k, v in map_data_to_save["area_map"].items()]
 
         map_data_to_save["area_map"] = area_map_list
         appState.set_data('curMap', map_data_to_save)
@@ -36,7 +37,7 @@ class MapServices:
                 if b[0] == "inner":
                     inner.append(a)
         return inner
-    
+
     def saveLocationDetails(self, cell):
         appState.set_data('prevCellData', cell)
         appState.save_state('save.json')
@@ -44,11 +45,10 @@ class MapServices:
     def getPreviousGroundColor(self):
         color = appState.get_data('prevCellData')[1]
         return color
-    
+
     def getPortalLocation(self):
         location = appState.get_data('portal')
         return location
-
 
 
 mapServices = MapServices()
