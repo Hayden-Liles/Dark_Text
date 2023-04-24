@@ -44,6 +44,10 @@ class MapServices:
     def getPreviousGroundColor(self):
         color = appState.get_data('prevCellData')[1]
         return color
+    
+    def getPortalLocation(self):
+        location = appState.get_data('portal')
+        return location
 
 
 

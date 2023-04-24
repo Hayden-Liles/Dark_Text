@@ -26,11 +26,16 @@ class PlayerController:
             (playerLocation[0], playerLocation[1]), "green")
         map = mapServices.getMap()["area_map"]
         locations = lootServices.generateAreaAroundPlayer(playerLocation, map)
+        portalLocation = mapServices.getPortalLocation()
+        print(portalLocation)
         for x in locations:
             if self.checkLocationIsVoid(tuple(x)) == None:
                 pass
             else:
-                master.update_cell_color((x[0], x[1]), x[2])
+                if portalLocation[0] == x[0] and portalLocation[1] == x[1]:
+                    master.update_cell_color((x[0], x[1]), 'blue')
+                else:
+                    master.update_cell_color((x[0], x[1]), x[2])
         mapServices.saveMap(master)
 
     def revertGroundColor(self, location, master):
