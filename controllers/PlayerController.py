@@ -24,12 +24,13 @@ class PlayerController:
         playerLocation = playerServices.getPlayerLocation()
         master.update_cell_color(
             (playerLocation[0], playerLocation[1]), "green")
-        locations = lootServices.generateAreaAroundPlayer(playerLocation)
+        map = mapServices.getMap()["area_map"]
+        locations = lootServices.generateAreaAroundPlayer(playerLocation, map)
         for x in locations:
             if self.checkLocationIsVoid(tuple(x)) == None:
                 pass
             else:
-                master.update_cell_color((x[0], x[1]), "#7C501A")
+                master.update_cell_color((x[0], x[1]), x[2])
         mapServices.saveMap(master)
 
     def revertGroundColor(self, location, master):
@@ -60,7 +61,14 @@ class PlayerController:
         self.drawPlayerLocation(master)
 
     def checkLocationIsVoid(self, location):
+        location = list(location)
+
+        if len(location) > 2:
+            location.pop(-1)
+        location = tuple(location)
+
         location = re.sub(r'[() ]', '', str(location))
+
         inner = mapServices.getInnerArea()
         check = inner.count(location)
         if (check == 0):
