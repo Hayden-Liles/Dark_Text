@@ -52,11 +52,12 @@ class PlayerController:
                 x += 1
 
         newLocation = (x, y)
-        check = self.checkLocationIsVoid(newLocation)
-        if (check == None):
+        location = self.checkLocationIsVoid(newLocation)
+        if (location == None):
             return
-        # TODO add a death sequence or an option to jump into the void :P or leave it whatever your feeling
         self.revertGroundColor(currentLocation, master)
+        self.saveLocationDetails(location)
+        # TODO add a death sequence or an option to jump into the void :P or leave it whatever your feeling
         playerServices.saveLocation(newLocation)
         self.drawPlayerLocation(master)
 
@@ -73,8 +74,7 @@ class PlayerController:
         check = inner.count(location)
         if (check == 0):
             return None
-        self.saveLocationDetails(location)
-        return True
+        return location
 
     def findIndexInMap(self, map, coords):
         for index, item in enumerate(map):

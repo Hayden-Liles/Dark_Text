@@ -25,9 +25,9 @@ class LootServices:
                         filteredList.append(a)
 
         options = {
-            "#7C501A": 0.8,
-            "yellow": 0.02,
-            "red": 0.1
+            "#7C501A": 0.945,
+            "yellow": 0.005,
+            "red": 0.05
         }
         for i in range(len(filteredList)):
             filteredList[i].append(random.choices(list(options.keys()), weights=list(options.values()))[0])
