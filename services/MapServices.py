@@ -5,13 +5,13 @@ class MapServices:
     def __init__(self):
         pass
 
-    def loadMap(self):
+    def checkMap(self):
         appState.load_state('save.json')
         map = appState.get_data('curMap')
         return map
 
     def saveMap(self, mapData):
-        map_data_to_save = mapData.getMapData()
+        map_data_to_save = mapData.get_map_data()
         for coords, data in map_data_to_save["area_map"].items():
             coords_list = list(coords)
             xCord, yCord = coords_list[0], coords_list[1]

@@ -22,7 +22,7 @@ class PlayerController:
 
     def drawPlayerLocation(self, master):
         playerLocation = playerServices.getPlayerLocation()
-        master.updateCellColor(
+        master.update_cell_color(
             (playerLocation[0], playerLocation[1]), "green")
         map = mapServices.getMap()["area_map"]
         locations = lootServices.generateAreaAroundPlayer(playerLocation, map)
@@ -33,14 +33,14 @@ class PlayerController:
                 pass
             else:
                 if portalLocation[0] == x[0] and portalLocation[1] == x[1]:
-                    master.updateCellColor((x[0], x[1]), 'blue')
+                    master.update_cell_color((x[0], x[1]), 'blue')
                 else:
-                    master.updateCellColor((x[0], x[1]), x[2])
+                    master.update_cell_color((x[0], x[1]), x[2])
         mapServices.saveMap(master)
 
     def revertGroundColor(self, location, master):
         color = mapServices.getPreviousGroundColor()
-        master.updateCellColor((location[0], location[1]), color)
+        master.update_cell_color((location[0], location[1]), color)
 
     def movePlayer(self, direction, master):
         currentLocation = playerServices.getPlayerLocation()
